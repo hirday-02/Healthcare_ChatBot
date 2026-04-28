@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { HealthProfile } from '../types';
+import { fetchCommonDiseases } from '../api/healthcare';
+import { FormattedText } from './FormattedText';
 import './ProfileTab.css';
 
 interface ProfileTabProps {
@@ -30,6 +32,9 @@ export const ProfileTab = ({
   const [form, setForm] = useState<HealthProfile>(defaultProfile);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [bmiResult, setBmiResult] = useState<string | null>(null);
+  
+  const [commonDiseases, setCommonDiseases] = useState<string | null>(null);
+  const [isFetchingDiseases, setIsFetchingDiseases] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -91,6 +96,23 @@ export const ProfileTab = ({
       return;
     }
     setBmiResult(`BMI: ${bmiInfo.bmi} (${bmiInfo.category})`);
+  };
+
+  const handleFetchDiseases = async () => {
+    if (!form.age || Number.isNaN(Number(form.age))) {
+      setErrors(prev => ({ ...prev, age: 'Please enter a valid age to view common risks.' }));
+      return;
+    }
+    try {
+      setIsFetchingDiseases(true);
+      const res = await fetchCommonDiseases(form.age);
+      setCommonDiseases(res.analysis);
+    } catch (error) {
+      console.error(error);
+      setCommonDiseases('Failed to fetch common diseases. Please try again.');
+    } finally {
+      setIsFetchingDiseases(false);
+    }
   };
 
   return (
@@ -207,6 +229,27 @@ export const ProfileTab = ({
 
         {bmiResult && <p className="bmi-result">{bmiResult}</p>}
       </form>
+
+      <section className="common-diseases-section" style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--glass-border)' }}>
+        <h3>Common Health Risks for Your Age</h3>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+          Learn about common diseases and preventive measures for individuals in your age group ({form.age || '?'}).
+        </p>
+        <button 
+          type="button" 
+          onClick={handleFetchDiseases} 
+          disabled={isFetchingDiseases || !form.age}
+          className="secondary"
+        >
+          {isFetchingDiseases ? 'Fetching...' : 'View Common Health Risks'}
+        </button>
+        
+        {commonDiseases && (
+          <div className="common-diseases-content" style={{ marginTop: '1.5rem', background: 'rgba(15, 23, 42, 0.4)', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)' }}>
+            <FormattedText text={commonDiseases} />
+          </div>
+        )}
+      </section>
     </section>
   );
 };

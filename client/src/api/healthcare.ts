@@ -42,3 +42,9 @@ export const clearHistory = (type?: 'chat' | 'symptom_check' | 'diet_plan') =>
     query: type ? { type } : undefined
   });
 
+export const fetchCommonDiseases = (age: string) =>
+  apiRequest<{ analysis: string }>('/profile/common-diseases', {
+    method: 'GET',
+    query: { age }
+  });
+

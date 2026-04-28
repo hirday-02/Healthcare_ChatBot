@@ -1,118 +1,176 @@
 .app-shell {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
-  width: min(1180px, 90vw);
+  gap: 2rem;
+  width: min(1200px, 92vw);
   margin: 0 auto;
-  padding: 2.5rem 0;
-  animation: fadeIn 0.8s ease-out;
+  padding: 3rem 0;
+  animation: slideUpFade 0.8s var(--transition-normal);
 }
 
 .tab-content {
-  min-height: 480px;
-  animation: slideUp 0.6s ease-out;
+  min-height: 500px;
+  animation: slideUpFade 0.5s var(--transition-normal);
 }
 
+/* Glassmorphism Cards */
 .tab-card {
-  background: #ffffff;
-  border-radius: 1.5rem;
-  padding: 2rem;
-  box-shadow: 0 20px 45px -35px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  animation: fadeIn 0.6s ease-out, slideUp 0.6s ease-out;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .tab-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 25px 50px -30px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .tab-card__header {
-  margin-bottom: 1.25rem;
-  animation: fadeIn 0.8s ease-out;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1.5rem;
 }
 
 .tab-card__header h2 {
   margin: 0;
-  font-size: 1.6rem;
-  color: #1976d2;
-  animation: slideDown 0.6s ease-out;
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
 .tab-card__header p {
-  margin: 0.4rem 0 0;
-  color: #616161;
-  font-size: 0.95rem;
-  animation: fadeIn 1s ease-out;
+  margin: 0.5rem 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
+/* Feedback Toast */
 .feedback {
-  padding: 0.9rem 1.2rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  width: fit-content;
-  align-self: center;
-  box-shadow: 0 12px 24px -22px rgba(0, 0, 0, 0.35);
-  animation: slideDown 0.4s ease-out, fadeIn 0.4s ease-out;
-  transition: transform 0.3s ease;
-}
-
-.feedback:hover {
-  transform: scale(1.05);
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  font-size: 0.95rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+  animation: slideDownFade 0.4s var(--transition-fast) forwards;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .feedback.success {
-  background: rgba(76, 175, 80, 0.15);
-  color: #1b5e20;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399; /* Emerald 400 */
 }
 
 .feedback.error {
-  background: rgba(244, 67, 54, 0.15);
-  color: #b71c1c;
-  animation: slideDown 0.4s ease-out, fadeIn 0.4s ease-out, shake 0.5s ease;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171; /* Red 400 */
+  animation: slideDownFade 0.4s var(--transition-fast) forwards, shake 0.5s ease 0.4s;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Base Inputs & Buttons inside cards */
+.tab-card input, 
+.tab-card select, 
+.tab-card textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tab-card input:focus, 
+.tab-card select:focus, 
+.tab-card textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+  background: rgba(15, 23, 42, 0.8);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tab-card input::placeholder, 
+.tab-card textarea::placeholder {
+  color: rgba(148, 163, 184, 0.5);
+}
+
+.tab-card button:not(.tab-btn) {
+  padding: 0.875rem 1.5rem;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+}
+
+.tab-card button:not(.tab-btn):hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+}
+
+.tab-card button:not(.tab-btn):active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.tab-card button:not(.tab-btn):disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.medical-alert {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  animation: shake 0.5s ease-out, slideDownFade 0.4s var(--transition-normal);
+  backdrop-filter: blur(4px);
+}
+
+.medical-alert strong {
+  color: #f87171;
+}
+
+/* Animations */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 @keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-10px);
-  }
-  75% {
-    transform: translateX(10px);
-  }
+  0%, 100% { transform: translate(-50%, 0); }
+  25% { transform: translate(calc(-50% - 8px), 0); }
+  75% { transform: translate(calc(-50% + 8px), 0); }
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './DietTab.css';
 import type { HealthProfile } from '../types';
+import { FormattedText } from './FormattedText';
 
 const GOALS = [
   'Weight Loss',
@@ -299,7 +300,7 @@ export const DietTab = ({
         <section className="diet-plan">
           <h3>Your Personalized Plan</h3>
           <div className="diet-plan__content">
-            <pre>{plan}</pre>
+            <FormattedText text={plan} />
           </div>
         </section>
       )}
